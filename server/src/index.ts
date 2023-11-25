@@ -1,9 +1,13 @@
 import express from 'express'
+import dotenv from 'dotenv';
 
+dotenv.config()
 const app = express()
 
+const apiBaseUrl = process.env.API_URL
+
 // default route
-app.get('/', (req, res) => {
+app.get(apiBaseUrl+'/', (req, res) => {
     res.send('App is Up and Running')
 })
 
