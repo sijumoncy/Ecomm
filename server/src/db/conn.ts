@@ -18,7 +18,7 @@ const connectDB = async () => {
 
     if(connection.readyState >=1) {
         console.log("connected to database");
-        return;
+        return connection;
     }
 
     connection.on("error", () => {
