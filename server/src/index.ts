@@ -1,30 +1,11 @@
-import express from 'express'
-import bodyParser from 'body-parser';
-import morgan from 'morgan'
 import connectDB from './db/conn';
-import productRoute from './routes/products'
 import { config } from './config/config';
 import logger from './config/logger';
+import app from './app'
 
-const app = express()
 let server:any;
 
-const apiBaseUrl = config.apiBaseUrl
 const port = config.port
-
-// middlewares
-app.use(bodyParser.json())
-app.use(morgan("tiny"))
-
-
-// default route
-app.get(`${apiBaseUrl}/`, (req, res) => {
-    res.send('App is Up and Running')
-})
-
-//routes
-app.use(`${apiBaseUrl}/products`, productRoute)
-
 
 const exitHandler = () => {
     if (server) {
@@ -52,7 +33,7 @@ process.on('SIGTERM', () => {
   }
 });
 
-// connect to db
+// connect to db and start server
 connectDB().then(() => {
     server = app.listen(port, () => {
         console.log(`App is Running in Port : 8000 ${port}`)
