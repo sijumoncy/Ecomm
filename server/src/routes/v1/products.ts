@@ -1,5 +1,5 @@
 import express from 'express'
-import Product, {ProductInterface} from '../models/Product'
+import Product, {ProductInterface} from '../../models/Product'
 
 const router = express.Router()
 const apiBaseUrl = process.env.API_URL
