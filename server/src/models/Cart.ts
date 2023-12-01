@@ -5,11 +5,13 @@ import { UserInterface } from './User';
 const cartSchema = new Schema({
     product: {
         type: Schema.Types.ObjectId,
-        ref: 'Product'
+        ref: 'Product',
+        required: true
     },
     user: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     },
     quantity: {
         type: Number,

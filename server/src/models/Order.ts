@@ -10,7 +10,8 @@ const oderSchema = new Schema({
         required: true,
     }],
     shippingAddress1: {
-        type: String
+        type: String,
+        required:true
     },
     shippingAddress2: {
         type: String
@@ -41,7 +42,8 @@ const oderSchema = new Schema({
     },
     user: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     },
     dateOrdered: {
         type: Date,
