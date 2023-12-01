@@ -1,5 +1,6 @@
 import express from 'express'
 import productRoute from './products'
+import userRoute from './Users'
 
 const router = express.Router()
 
@@ -7,6 +8,10 @@ const appRoutes = [
     {
         path:'/products',
         route: productRoute
+    },
+    {
+        path:'/users',
+        route: userRoute
     }
 ]
 

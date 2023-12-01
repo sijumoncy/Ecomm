@@ -12,12 +12,6 @@ const userSchema = new Schema({
         trim: true,
         unique:true,
         lowercase:true,
-        validate(value:string) {
-            // if () {
-            //   throw new Error('Invalid email');
-            // }
-            // add validator
-          },
     },
     isEmailVerified: {
         type: Boolean,
@@ -29,7 +23,7 @@ const userSchema = new Schema({
     },
     phone: {
         type: String,
-        required: true
+        default: ''
     },
     isAdmin: {
         type: Boolean,
@@ -39,7 +33,7 @@ const userSchema = new Schema({
         type: String,
         default: ''
     },
-    apartment: {
+    address: {
         type: String,
         default: ''
     },
@@ -69,7 +63,6 @@ export interface UserInterface extends Document {
     zip: string;
     city: string;
     country: string;
-    
 }
   
 export default model<UserInterface>("User", userSchema)
