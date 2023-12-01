@@ -1,0 +1,1 @@
+export type OrderStatusType = "Pending" | "Processing" | "InTransit" | "Delivered"
