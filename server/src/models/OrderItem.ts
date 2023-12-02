@@ -1,7 +1,7 @@
 import {Schema, model} from 'mongoose';
 import { ProductInterface } from './Product';
 
-const oderItemSchema = new Schema({
+const oderItemSchema = new Schema<OrderItemInterface>({
     quantity: {
         type: Number,
         required: true
@@ -16,5 +16,6 @@ export interface OrderItemInterface extends Document {
     product: ProductInterface;
     quantity: number;
 }
-  
-export default model<OrderItemInterface>("OrderItem", oderItemSchema)
+
+const OrderItemModel = model<OrderItemInterface>("OrderItem", oderItemSchema)
+export default OrderItemModel;
