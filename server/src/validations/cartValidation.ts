@@ -18,13 +18,13 @@ const getCarts = {
 
 const getCart = {
   params: Joi.object().keys({
-    CartId: Joi.string().required(),
+    cartId: Joi.string().required(),
   }),
 };
 
 const updateCart = {
   params: Joi.object().keys({
-    CartId: Joi.string().required(),
+    cartId: Joi.string().required(),
   }),
   body: Joi.object()
     .keys({
@@ -37,7 +37,7 @@ const updateCart = {
 
 const deleteCart = {
   params: Joi.object().keys({
-    CartId: Joi.string().required(),
+    cartId: Joi.string().required(),
   }),
 };
 

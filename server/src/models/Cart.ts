@@ -25,5 +25,6 @@ export interface CartInterface extends Document {
     user: UserInterface;
     quantity: number;
 }
-  
-export default model<CartInterface>("Cart", cartSchema)
+
+const CartModel = model<CartInterface>("Cart", cartSchema)
+export default CartModel;
