@@ -14,8 +14,8 @@ const getUsers = {
       country: Joi.string(),
       city: Joi.string(),
       zip: Joi.string(),
-      limit: Joi.number().integer(),
-      page: Joi.number().integer(),
+      limit: Joi.number().integer().default(100),
+      page: Joi.number().integer().default(0),
     }),
   };
   

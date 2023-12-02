@@ -2,7 +2,7 @@ import Joi from "joi";
 import httpStatus from 'http-status'
 import { pickKeyValues } from "../utils/pickKeyValues";
 import ApiError from "../utils/apiError";
-import { NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 
 const validate = (schema:object) => (req:Request, res:Response,next:NextFunction) => {
     const validSchema = pickKeyValues(schema, ['params', 'query', 'body'])
