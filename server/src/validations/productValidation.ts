@@ -9,7 +9,7 @@ const addProduct = {
     image: Joi.string(),
     images: Joi.array().items(Joi.string()),
     brand: Joi.string(),
-    price: Joi.number(),
+    price: Joi.number().required(),
     stock: Joi.number(),
     rating: Joi.string(),
     numReviews: Joi.string(),

@@ -1,38 +1,31 @@
-import express from 'express'
-import Product, {ProductInterface} from '../../models/Product'
+import express from 'express';
+import validate from '../../middlewares/validate';
+import {
+  addProduct,
+  getProducts,
+  getProduct,
+  updateProduct,
+  deleteProduct,
+} from '../../validations/productValidation';
+import {
+  addProductController,
+  getProductsController,
+  getProductController,
+  updateProductController,
+  deleteProductController,
+} from '../../controllers/productController';
 
-const router = express.Router()
-const apiBaseUrl = process.env.API_URL
+const router = express.Router();
 
-// add products
-router.post("/", async (req, res) => {
-    try{
-        const product = new Product({
-            name: req.body.name,
-            image: req.body.image,
-            count:req.body.count,
-        })
-        const createdProduct = await product.save()
-        res.status(201).json(createdProduct)
-    } catch(err) {
-        res.status(500).json({
-            error: err,
-            success:false
-        })
-    }
-})
+router
+  .route('/')
+  .post(validate(addProduct), addProductController)
+  .get(validate(getProducts), getProductsController);
 
-// get all products
-router.get("/", async (req, res) => {
-    try {
-        const productList = await Product.find();
-        res.status(200).json(productList)
-    } catch(err) {
-        res.status(500).json({
-            error:err,
-            success:false
-        })
-    }
-})
+router
+  .route('/:productId')
+  .get(validate(getProduct), getProductController)
+  .patch(validate(updateProduct), updateProductController)
+  .delete(validate(deleteProduct), deleteProductController);
 
 export default router;
