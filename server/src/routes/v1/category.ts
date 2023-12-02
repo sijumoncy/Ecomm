@@ -23,7 +23,7 @@ router
   .get(validate(getCategories), getCategoriesController);
 
 router
-  .route('/:productId')
+  .route('/:categoryId')
   .get(validate(getCategory), getCategoryController)
   .patch(validate(updateCategory), updateCategoryController)
   .delete(validate(deleteCategory), deleteCategoryController);

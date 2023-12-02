@@ -38,7 +38,8 @@ const oderSchema = new Schema({
         default: 'Pending'
     },
     totalPrice: {
-        type: Number
+        type: Number,
+        required:true
     },
     user: {
         type: Schema.Types.ObjectId,
@@ -69,5 +70,6 @@ export interface OrderInterface extends Document {
     user: UserInterface;
     dateDelivered: Date;
 }
-  
-export default model<OrderInterface>("Order", oderSchema)
+
+const OrderModel = model<OrderInterface>("Order", oderSchema)
+export default OrderModel;

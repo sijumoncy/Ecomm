@@ -23,7 +23,7 @@ router
   .get(validate(getorderItems), getOrderItemsController);
 
 router
-  .route('/:productId')
+  .route('/:orderItemId')
   .get(validate(getorderItem), getOrderItemController)
   .patch(validate(updateorderItem), updateOrderItemController)
   .delete(validate(deleteorderItem), deleteOrderItemController);
