@@ -1,6 +1,7 @@
 import httpStatus from 'http-status';
 import UserModel, { UserInterface } from '../models/User';
 import ApiError from '../utils/apiError';
+import {Schema} from 'mongoose';
 
 const createUserService = async (userBody: UserInterface) => {
   if (await UserModel.isEmailExist(userBody.email)) {
@@ -24,11 +25,16 @@ const getUsersService = async (
   return users;
 };
 
-const getUserByIdService = async (id:string) => {
-  return UserModel.findById(id);
+const getUserByIdService = async (id:Schema.Types.ObjectId) => {
+  const user = UserModel.findById(id);
+  return user
 };
 
-const updateUserByIdService = async (userId:string, updateBody:{
+const getUserByEmailService = async (email:string) => {
+  return UserModel.findOne({ email });
+};
+
+const updateUserByIdService = async (userId:Schema.Types.ObjectId, updateBody:{
   name?: string
   email?: string
   password?: string
@@ -65,4 +71,5 @@ export {
   getUserByIdService,
   updateUserByIdService,
   deleteUserByIdService,
+  getUserByEmailService
 };

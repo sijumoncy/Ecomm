@@ -10,7 +10,13 @@ const envVarsSchema = Joi.object()
     PORT: Joi.number().default(8000),
     API_URL: Joi.string().description('base url o api with version').default('/api/v1'),
     MONGO_URI: Joi.string().required().description('Mongo DB url'),
-    MONGO_DB_NAME: Joi.string().required().description('Mongo DB name')
+    MONGO_DB_NAME: Joi.string().required().description('Mongo DB name'),
+    JWT_SECRET: Joi.string().required().description('JWT secret key'),
+    JWT_ACCESS_EXPIRATION_MINUTES: Joi.number().default(30).description('minutes after which access tokens expire'),
+    JWT_REFRESH_EXPIRATION_DAYS: Joi.number().default(30).description('days after which refresh tokens expire'),
+    JWT_RESET_PASSWORD_EXPIRATION_MINUTES: Joi.number()
+      .default(10)
+      .description('minutes after which reset password token expires'),
   })
   .unknown();
 
@@ -27,5 +33,11 @@ export const config = {
   mongo: {
     url: envVars.MONGO_URI,
     dbName: envVars.MONGO_DB_NAME
+  },
+  jwt:{
+    secret: envVars.JWT_SECRET,
+    accessExpirationMinutes: envVars.JWT_ACCESS_EXPIRATION_MINUTES,
+    refreshExpirationDays: envVars.JWT_REFRESH_EXPIRATION_DAYS,
+    resetPasswordExpirationMinutes: envVars.JWT_RESET_PASSWORD_EXPIRATION_MINUTES,
   }
 };

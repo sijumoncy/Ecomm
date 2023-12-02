@@ -18,7 +18,8 @@ export interface UserInterface {
 }
 
 interface UserModel extends Model<UserInterface> {
-    isEmailExist(email:string, excludeUserId?:string):Promise<boolean>
+    isEmailExist(email:string, excludeUserId?:Schema.Types.ObjectId):Promise<boolean>
+    matchPasswords: (password:string) => Promise<boolean>
 }
 
 const userSchema = new Schema<UserInterface, UserModel>({
@@ -77,6 +78,11 @@ userSchema.static('isEmailExist', async function isEmailExist(email:string, excl
     const user:UserInterface|null = await this.findOne({ email, _id: { $ne: excludeUserId }});
     return !!user
 })
+
+userSchema.methods.matchPasswords = async function(password:string):Promise<boolean> {
+    const user = this;
+    return bcrypt.compare(password, user.passwordHash)
+}
 
 userSchema.pre("save", async function(next){
     const user = this;
