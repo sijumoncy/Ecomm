@@ -31,15 +31,18 @@ const getProductByIdService = async (id: string) => {
 const updateProductByIdService = async (
   userId: string,
   updateBody: {
-    name?: string;
-    email?: string;
-    password?: string;
-    phone?: string;
-    street?: string;
-    address?: string;
-    zip?: string;
-    city?: string;
-    country?: string;
+    name?: string,
+    description?: string,
+    richDescription?: string,
+    category?: string,
+    image?: string,
+    images?: string[],
+    brand?: string,
+    price?: number,
+    stock?: number,
+    rating?: string,
+    numReviews?: string,
+    isFeatured?: boolean,
   }
 ) => {
   const product = await getProductByIdService(userId);
