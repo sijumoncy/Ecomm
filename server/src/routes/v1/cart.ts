@@ -14,18 +14,19 @@ import {
   getCartsController,
   updateCartController
 } from '../../controllers/cartControllers';
+import { authenticate } from '../../middlewares/authenticate';
 
 const router = express.Router();
 
 router
   .route('/')
-  .post(validate(addCart), addCartController)
-  .get(validate(getCarts), getCartsController);
+  .post(authenticate, validate(addCart), addCartController)
+  .get(authenticate, validate(getCarts), getCartsController);
 
 router
   .route('/:cartId')
-  .get(validate(getCart), getCartController)
-  .patch(validate(updateCart), updateCartController)
-  .delete(validate(deleteCart), deleteCartController);
+  .get(authenticate, validate(getCart), getCartController)
+  .patch(authenticate, validate(updateCart), updateCartController)
+  .delete(authenticate, validate(deleteCart), deleteCartController);
 
 export default router;

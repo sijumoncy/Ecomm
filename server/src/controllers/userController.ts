@@ -9,6 +9,7 @@ import {
   updateUserByIdService,
   deleteUserByIdService,
 } from '../services/userServices';
+import { IAuthRequest } from '../types/authTypes';
 
 const createUserController = async (req: Request, res: Response) => {
   const user = await createUserService(req.body);
@@ -17,11 +18,11 @@ const createUserController = async (req: Request, res: Response) => {
     .json({ message: 'user created successfully', data: user });
 };
 
-const getUsersController = async (req: Request, res: Response) => {
-  const filter = pickKeyValues(req.query, ['name', 'country', 'city', 'zip']);
-  const options = pickKeyValues(req.query, ['limit', 'page']);
-  const result = await getUsersService(filter, options);
-  res.status(httpStatus.OK).send(result);
+const getUsersController = async (req: IAuthRequest, res: Response) => {
+    const filter = pickKeyValues(req.query, ['name', 'country', 'city', 'zip']);
+    const options = pickKeyValues(req.query, ['limit', 'page']);
+    const result = await getUsersService(filter, options);
+    res.status(httpStatus.OK).send(result);
 };
 
 const getUserController = async (req: Request, res: Response) => {

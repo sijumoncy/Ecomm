@@ -14,18 +14,19 @@ import {
   updateUserController,
   deleteUserController,
 } from '../../controllers/userController';
+import { AdminOnlyAccess, authenticate, checkPermissionAdminOrSameUserReq } from '../../middlewares/authenticate';
 
 const router = express.Router();
 
 router
   .route('/')
-  .post(validate(createUser), createUserController)
-  .get(validate(getUsers), getUsersController);
+  .post(authenticate, validate(createUser), createUserController)
+  .get(authenticate, AdminOnlyAccess, validate(getUsers), getUsersController);
 
 router
   .route('/:userId')
-  .get(validate(getUser), getUserController)
-  .patch(validate(updateUser), updateUserController)
-  .delete(validate(deleteUser), deleteUserController);
+  .get(authenticate, checkPermissionAdminOrSameUserReq, validate(getUser), getUserController)
+  .patch(authenticate, checkPermissionAdminOrSameUserReq, validate(updateUser), updateUserController)
+  .delete(authenticate, AdminOnlyAccess, validate(deleteUser), deleteUserController);
 
 export default router;

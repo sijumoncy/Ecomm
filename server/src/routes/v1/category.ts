@@ -14,18 +14,19 @@ import {
   updateCategoryController,
   deleteCategoryController,
 } from '../../controllers/categoryControllers';
+import { AdminOnlyAccess, authenticate } from '../../middlewares/authenticate';
 
 const router = express.Router();
 
 router
   .route('/')
-  .post(validate(addCategory), addCategoryController)
+  .post(authenticate, AdminOnlyAccess, validate(addCategory), addCategoryController)
   .get(validate(getCategories), getCategoriesController);
 
 router
   .route('/:categoryId')
   .get(validate(getCategory), getCategoryController)
-  .patch(validate(updateCategory), updateCategoryController)
-  .delete(validate(deleteCategory), deleteCategoryController);
+  .patch(authenticate, AdminOnlyAccess, validate(updateCategory), updateCategoryController)
+  .delete(authenticate, AdminOnlyAccess, validate(deleteCategory), deleteCategoryController);
 
 export default router;

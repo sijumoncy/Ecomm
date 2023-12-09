@@ -9,6 +9,7 @@ import {
   getOrdersService,
   updateOrderByIdService
 } from '../services/ordersService';
+import { IAuthRequest } from '../types/authTypes';
 
 const addOrderController = async (req: Request, res: Response) => {
   const order = await createOrderService(req.body);
@@ -17,15 +18,15 @@ const addOrderController = async (req: Request, res: Response) => {
     .json({ message: 'Order created successfully', data: order });
 };
 
-const getOrdersController = async (req: Request, res: Response) => {
+const getOrdersController = async (req: IAuthRequest, res: Response) => {
   const filter = pickKeyValues(req.query, ['user', 'status', 'dateOrdered', 'dateDelivered']);
   const options = pickKeyValues(req.query, ['limit', 'page']);
-  const result = await getOrdersService(filter, options);
+  const result = await getOrdersService(filter, options, req);
   res.status(httpStatus.OK).send(result);
 };
 
 const getOrderController = async (req: Request, res: Response) => {
-  const order = await getOrderByIdService(req.params.orderId);
+  const order = await getOrderByIdService(req.params.orderId, req);
   if (!order) {
     throw new ApiError(httpStatus.NOT_FOUND, 'order not found');
   }
@@ -33,7 +34,7 @@ const getOrderController = async (req: Request, res: Response) => {
 };
 
 const updateOrderController = async (req: Request, res: Response) => {
-  const order = await updateOrderByIdService(req.params.orderId, req.body);
+  const order = await updateOrderByIdService(req.params.orderId, req.body, req);
   res.status(httpStatus.OK).json({ message: 'order updated successfully', data: order });
 };
 

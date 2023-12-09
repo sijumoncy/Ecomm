@@ -14,18 +14,19 @@ import {
   updateProductController,
   deleteProductController,
 } from '../../controllers/productController';
+import { AdminOnlyAccess, authenticate } from '../../middlewares/authenticate';
 
 const router = express.Router();
 
 router
   .route('/')
-  .post(validate(addProduct), addProductController)
+  .post(authenticate, validate(addProduct), addProductController)
   .get(validate(getProducts), getProductsController);
 
 router
   .route('/:productId')
   .get(validate(getProduct), getProductController)
-  .patch(validate(updateProduct), updateProductController)
-  .delete(validate(deleteProduct), deleteProductController);
+  .patch(authenticate, AdminOnlyAccess, validate(updateProduct), updateProductController)
+  .delete(authenticate, AdminOnlyAccess, validate(deleteProduct), deleteProductController);
 
 export default router;

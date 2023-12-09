@@ -1,8 +1,8 @@
 import { NextFunction } from 'express';
-import {Schema, model, Model} from 'mongoose';
+import {Schema, model, Model, Document} from 'mongoose';
 import bcrypt from 'bcryptjs'
 
-export interface UserInterface {
+export interface UserInterface extends Document {
     name: string;
     email: string;
     isEmailVerified: boolean;

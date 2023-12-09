@@ -14,18 +14,19 @@ import {
   deleteOrderController,
   updateOrderController
 } from '../../controllers/orderControllers';
+import {AdminOnlyAccess, authenticate } from '../../middlewares/authenticate';
 
 const router = express.Router();
 
 router
   .route('/')
-  .post(validate(addorder), addOrderController)
-  .get(validate(getOrders), getOrdersController);
+  .post(authenticate, validate(addorder), addOrderController)
+  .get(authenticate, validate(getOrders), getOrdersController);
 
 router
   .route('/:orderId')
-  .get(validate(getorder), getOrderController)
-  .patch(validate(updateorder), updateOrderController)
-  .delete(validate(deleteorder), deleteOrderController);
+  .get(authenticate, validate(getorder), getOrderController)
+  .patch(authenticate, validate(updateorder), updateOrderController)
+  .delete(authenticate, AdminOnlyAccess, validate(deleteorder), deleteOrderController);
 
 export default router;

@@ -1,9 +1,14 @@
 import httpStatus from 'http-status';
 import OrderItemModel, { OrderItemInterface } from '../models/OrderItem';
 import ApiError from '../utils/apiError';
+import { IAuthRequest } from '../types/authTypes';
 
-const createOrderItemService = async (OrderItemBody: OrderItemInterface) => {
-  return OrderItemModel.create(OrderItemBody);
+const createOrderItemService = async (req: IAuthRequest) => {
+  if(req.user) {
+    return OrderItemModel.create({...req.body, user:req.user._id});
+  }else{
+    throw new ApiError(httpStatus.NOT_FOUND, 'authentication failed');
+  }
 };
 
 const getOrderItemsService = async (
@@ -11,9 +16,13 @@ const getOrderItemsService = async (
   options: {
     limit?: number;
     page?: number;
-  }
+  },
+  req:IAuthRequest
 ) => {
   const pageNum = (options.limit || 100) * (options.page || 0);
+  if(!req.user?.isAdmin){
+    filter = {...filter, user:req.user?._id}
+  }
   const orderItem = await OrderItemModel.find({ filter })
     .limit(options.limit || 100)
     .skip(pageNum)
@@ -21,8 +30,12 @@ const getOrderItemsService = async (
   return orderItem;
 };
 
-const getOrderItemByIdService = async (id: string) => {
-  return OrderItemModel.findById(id);
+const getOrderItemByIdService = async (orderItemId: string, req:IAuthRequest) => {
+  const filter:any = {_id:orderItemId }
+  if(!req.user?.isAdmin) {
+    filter.user = req.user?._id
+  }
+  return OrderItemModel.find(filter);
 };
 
 const updateOrderItemByIdService = async (
@@ -30,19 +43,26 @@ const updateOrderItemByIdService = async (
   updateBody: {
     quantity?: number;
     product?: string;
-  }
+  },
+  req:IAuthRequest
 ) => {
-  const orderItem = await getOrderItemByIdService(orderItemId);
-  if (!orderItem) {
+  const orderItem = await getOrderItemByIdService(orderItemId, req);
+  if (!orderItem || !(orderItem.length > 0)) {
     throw new ApiError(httpStatus.NOT_FOUND, 'OrderItem not found');
   }
-  Object.assign(orderItem, updateBody);
-  await orderItem.save();
-  return orderItem;
+  Object.assign(orderItem[0], updateBody);
+  await orderItem[0].save();
+  return orderItem[0];
 };
 
-const deleteOrderItemByIdService = async (userId: string) => {
-  const deletedOrderItem = await OrderItemModel.findByIdAndDelete(userId);
+const deleteOrderItemByIdService = async (orderId: string, req:IAuthRequest) => {
+  let deletedOrderItem;
+  if(req.user?.isAdmin){
+    deletedOrderItem = await OrderItemModel.findByIdAndDelete(orderId);
+  } else{
+    deletedOrderItem = await OrderItemModel.find({_id:orderId, user:req.user?.id});
+    deletedOrderItem = deletedOrderItem.length > 0 ? deletedOrderItem[0] : deletedOrderItem
+  }
   if (!deletedOrderItem) {
     throw new ApiError(httpStatus.NOT_FOUND, 'OrderItem not found');
   }
