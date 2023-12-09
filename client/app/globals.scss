@@ -1,3 +1,9 @@
+@import '../styles/partials/colours';
+@import '../styles/partials/fonts';
+@import '../styles/partials/variables';
+@import '../styles/partials/mixins';
+@import '../styles/partials/responsive';
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
@@ -72,3 +78,10 @@
     --card-border-rgb: 200, 200, 200;
   }
 } */
+
+
+body{
+  background-color: $bg-primary-color;
+  color: $text-primary-color;
+  font-family: $font-family;
+}
